@@ -66,6 +66,18 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
+    /*
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        int promptPasscode = getSavedAccount();
+
+        if (promptPasscode == 1) {
+            changeLoginB();
+        }
+    }*/
+
     private String getSavedName(){
 
         savedAccount = new Properties();
@@ -137,5 +149,39 @@ public class HomeActivity extends AppCompatActivity implements
         Intent intentito = new Intent(this, RoutineDetailActivity.class);
         startActivity(intentito);
         //Toast.makeText(this, "position: " + position + " id: " + id, Toast.LENGTH_SHORT).show();
+    }
+
+    // Codigo se repite
+    private int getSavedAccount(){
+
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+
+        if(file.exists()){
+            try {
+                FileInputStream fis = openFileInput(SAVED_ACCOUNT);
+                savedAccount.loadFromXML(fis);
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (InvalidPropertiesFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Toast.makeText(this, savedAccount.get("remember") + "", Toast.LENGTH_SHORT).show();
+
+            String result = savedAccount.get("remember") + "";
+            return Integer.parseInt(result);
+
+        }
+
+        return -1;
+    }
+
+    public void changeLoginB(){
+        Intent intentitoB = new Intent(this, PasscodeActivity.class);
+        startActivity(intentitoB);
     }
 }
