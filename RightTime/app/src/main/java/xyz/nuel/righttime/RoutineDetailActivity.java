@@ -1,10 +1,14 @@
 package xyz.nuel.righttime;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class RoutineDetailActivity extends AppCompatActivity {
+public class RoutineDetailActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceExercises;
@@ -48,6 +52,7 @@ public class RoutineDetailActivity extends AppCompatActivity {
                     exercises.add(exercise);
                 }
                 listRoutineDet.setAdapter(adapter);
+                listRoutineDet.setOnItemClickListener(RoutineDetailActivity.this);
             }
 
             @Override
@@ -56,5 +61,13 @@ public class RoutineDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Exercise ejercicio = exercises.get(position);
+        Intent intent = new Intent(this, ExerciseActivity.class);
+        intent.putExtra("ejercicio", ejercicio);
+        startActivity(intent);
     }
 }

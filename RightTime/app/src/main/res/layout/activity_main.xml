@@ -4,23 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/txtTitle"
-        android:layout_width="334dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
         android:text="TRAIN TO LAST LONGER IN BED"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintBottom_toTopOf="@+id/txtSubMain"
+        app:layout_constraintEnd_toEndOf="@+id/txtSubMain"
+        app:layout_constraintStart_toStartOf="@+id/txtSubMain"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
     <TextView
         android:id="@+id/txtSubMain"
@@ -30,38 +35,46 @@
         android:layout_alignStart="@+id/txtTitle"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
         android:text="Get rid of premature ejaculation with Keggle exercises"
+        app:layout_constraintBottom_toTopOf="@+id/btStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
 
     <Button
         android:id="@+id/btStart"
-        android:layout_width="333dp"
-        android:layout_height="58dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@+id/txtSubMain"
         android:layout_alignStart="@+id/txtTitle"
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="13dp"
         android:background="@android:color/holo_blue_dark"
         android:onClick="changeSignUp"
         android:text="Get Started!"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtOr"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSubMain" />
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="144dp"
+        android:layout_width="0dp"
         android:layout_height="126dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="68dp"
         android:layout_marginLeft="68dp"
         android:layout_marginTop="140dp"
+        android:layout_marginBottom="141dp"
         android:src="@drawable/plantsnut"
+        app:layout_constraintBottom_toTopOf="@+id/txtSubMain"
+        app:layout_constraintEnd_toStartOf="@+id/imageView9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,6 +86,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginRight="71dp"
+        android:layout_marginBottom="157dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView8"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/clock" />
@@ -80,14 +98,14 @@
     <TextView
         android:id="@+id/txtSignIn"
         android:layout_width="211dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="19dp"
         android:onClick="changeLogin"
         android:text="Sign In to existing account"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtOr" />
 
@@ -95,20 +113,11 @@
         android:id="@+id/txtOr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="196dp"
-        android:layout_marginLeft="196dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="24dp"
         android:text="or"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txtSignIn"
+        app:layout_constraintEnd_toEndOf="@+id/btStart"
+        app:layout_constraintStart_toStartOf="@+id/btStart"
         app:layout_constraintTop_toBottomOf="@+id/btStart" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="413dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSignIn"
-        app:srcCompat="@drawable/ic_launcher_background" />
 
 </android.support.constraint.ConstraintLayout>
