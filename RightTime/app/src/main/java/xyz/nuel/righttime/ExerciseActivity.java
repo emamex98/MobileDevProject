@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,17 +18,33 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.InvalidPropertiesFormatException;
+import java.util.Properties;
 
 public class ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentInteractionListener {
 
     private Exercise ejercicio;
     private TextView nombre, set, rep, tiempo;
 
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
+    private Properties savedAccount;
+
+    private static final String SAVED_ACCOUNT = "savedAccount.xml";
+    private int currentScore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        currentScore = -20;
 
         nombre = findViewById(R.id.name);
         set = findViewById(R.id.sets);
@@ -78,9 +95,48 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
     @Override
     public void fragmentCallback(boolean done) {
         if(done){
-            //aqui se le agregan puntos al usuario
-            Toast.makeText(this, "se acaba", Toast.LENGTH_SHORT).show();
-            //usuario.escribirenBase(ejercicio.getPoints())
+
+            mDatabase = FirebaseDatabase.getInstance();
+            mReference = mDatabase.getReference("userdata/" + getSavedUID() + "/score");
+
+            mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    currentScore = Integer.parseInt(dataSnapshot.getValue().toString());
+                    mReference.setValue(currentScore + ejercicio.getPoints());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            Toast.makeText(this, "You've earned " + ejercicio.getPoints() + " points!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getSavedUID(){
+
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+
+        if(file.exists()){
+            try {
+                FileInputStream fis = openFileInput(SAVED_ACCOUNT);
+                savedAccount.loadFromXML(fis);
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (InvalidPropertiesFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return savedAccount.get("uid") + "";
+
+        }
+
+        return null;
     }
 }

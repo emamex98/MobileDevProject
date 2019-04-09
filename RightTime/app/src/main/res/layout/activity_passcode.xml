@@ -43,15 +43,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/clock" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="413dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="604dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
-
     <EditText
         android:id="@+id/txtPasscodeB"
         android:layout_width="wrap_content"

@@ -9,10 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,12 +41,13 @@ public class HomeActivity extends AppCompatActivity implements
     private Properties savedAccount;
     private static final String SAVED_ACCOUNT = "savedAccount.xml";
 
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
+
     private TextView greeting, txtScore, txtLevel;
     private ListView listRoutine;
+    private ProgressBar pg;
     private ArrayAdapter<String> adapter;
-    private DBHelper db;
-
-    private View currentSelectedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +57,27 @@ public class HomeActivity extends AppCompatActivity implements
         greeting = findViewById(R.id.txtWelcome);
         greeting.setText("Welcome, " + getSavedName() + "!");
 
-        db = new DBHelper(this);
-
         txtScore = findViewById(R.id.txtScore);
-        txtScore.setText("Score: " + db.getScore(getSavedEmail()));
-
         txtLevel = findViewById(R.id.txtLevel);
-        txtLevel.setText("Level: " + db.getLevel(getSavedEmail()) + "");
+        pg = findViewById(R.id.progressBar);
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mReference = mDatabase.getReference("userdata/" + getSavedUID() + "/score");
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String score = dataSnapshot.getValue().toString();
+                txtScore.setText("Score: " + score);
+                long level = Math.round(Math.floor(Integer.parseInt(score)/10));
+                txtLevel.setText("Level: " + level);
+                pg.setProgress(((int)level * 10)%100);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         listRoutine = findViewById(R.id.listRoutines);
 
@@ -73,27 +91,55 @@ public class HomeActivity extends AppCompatActivity implements
         listRoutine.setAdapter(adapter);
         listRoutine.setOnItemClickListener(this);
 
+        Button  mon = findViewById(R.id.btMon),
+                tue = findViewById(R.id.btTue),
+                wed = findViewById(R.id.btWed),
+                thu = findViewById(R.id.btThu),
+                fri = findViewById(R.id.btFri),
+                sat = findViewById(R.id.btSat),
+                sun = findViewById(R.id.btSun);
+
+        mon.setVisibility(View.INVISIBLE);
+        tue.setVisibility(View.INVISIBLE);
+        wed.setVisibility(View.INVISIBLE);
+        thu.setVisibility(View.INVISIBLE);
+        fri.setVisibility(View.INVISIBLE);
+        sat.setVisibility(View.INVISIBLE);
+        sun.setVisibility(View.INVISIBLE);
+
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("u");
         String formattedDate = df.format(c);
         int weekday = Integer.parseInt(formattedDate);
 
+        switch (weekday){
+            case 1:
+                mon.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                tue.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                wed.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                thu.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                fri.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                sat.setVisibility(View.VISIBLE);
+                break;
+            case 7:
+                sun.setVisibility(View.VISIBLE);
+                break;
+        }
+
 
         Log.wtf("DATE","Current time => " + formattedDate);
 
     }
-
-    /*
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        int promptPasscode = getSavedAccount();
-
-        if (promptPasscode == 1) {
-            changeLoginB();
-        }
-    }*/
 
     private String getSavedName(){
 
@@ -195,6 +241,32 @@ public class HomeActivity extends AppCompatActivity implements
         }
 
         return -1;
+    }
+
+    // Codigo se repite
+    private String getSavedUID(){
+
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+
+        if(file.exists()){
+            try {
+                FileInputStream fis = openFileInput(SAVED_ACCOUNT);
+                savedAccount.loadFromXML(fis);
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (InvalidPropertiesFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return savedAccount.get("uid") + "";
+
+        }
+
+        return null;
     }
 
     public void changeLoginB(){

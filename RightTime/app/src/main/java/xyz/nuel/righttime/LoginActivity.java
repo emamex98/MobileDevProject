@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,13 +33,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReferenceExercises;
+    private DatabaseReference mReference;
 
     private TextView email, passcode;
     private Properties savedAccount;
     private static final String SAVED_ACCOUNT = "savedAccount.xml";
 
     private Intent intentHome;
+    private String currentUID, currentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +55,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logInToAccount(View v){
         firebaseAuth = FirebaseAuth.getInstance();
-
         firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), passcode.getText().toString()).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            currentUID = firebaseAuth.getCurrentUser().getUid();
                             setSavedAccount();
-                            startActivity(intentHome);
                         } else {
                             String error = task.getException().getMessage();
                             Toast.makeText(getApplicationContext(), error + "", Toast.LENGTH_SHORT).show();
@@ -68,40 +69,43 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        //String currentUID = firebaseAuth.getCurrentUser().getUid();
+        //Log.wtf("UID", currentUID);
     }
 
     private void setSavedAccount(){
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mReferenceExercises = mDatabase.getReference("userData");
-        //String userData;
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+        currentName = "PAJARITA";
 
-        /*mReferenceExercises.addValueEventListener(new ValueEventListener() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mReference = mDatabase.getReference("userdata/" + currentUID + "/name");
+        mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot keyNode: dataSnapshot.getChildren()){
-                    keyNode.getValue(String.class);
-                    Log.wtf("DATA", keyNode + "");
-                }
+
+                String yes = "1";
+                currentName = dataSnapshot.getValue().toString();
+
+                savedAccount.put("remember", yes);
+                savedAccount.put("name", currentName);
+                savedAccount.put("email", email.getText().toString());
+                savedAccount.put("passcode", passcode.getText().toString());
+                savedAccount.put("uid", currentUID);
+                wrFile();
+
+                startActivity(intentHome);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });*/
+        });
 
-        savedAccount = new Properties();
-        File file = new File(getFilesDir(), SAVED_ACCOUNT);
-
-        String yes = "1";
-
-        savedAccount.put("remember", yes);
-        savedAccount.put("name", "Pajarita");
-        savedAccount.put("email", email.getText().toString());
-        savedAccount.put("passcode", passcode.getText().toString());
-        wrFile();
-        Toast.makeText(this, "ACCOUNT SAVED: " + savedAccount.getProperty("email"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "ACCOUNT SAVED", Toast.LENGTH_SHORT).show();
 
 
     }

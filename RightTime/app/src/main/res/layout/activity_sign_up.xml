@@ -69,12 +69,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tfPasscodeNew" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="413dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="204dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSU"
-        app:srcCompat="@drawable/ic_launcher_background" />
 </android.support.constraint.ConstraintLayout>
