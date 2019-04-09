@@ -77,14 +77,14 @@
         app:layout_constraintTop_toBottomOf="@+id/repetitions" />
 
     <Button
-        android:id="@+id/notesButton"
+        android:id="@+id/timerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="67dp"
         android:layout_marginRight="67dp"
         android:layout_marginBottom="29dp"
         android:onClick="loadNotes"
-        android:text="Notes"
+        android:text="Timer"
         app:layout_constraintBottom_toTopOf="@+id/container"
         app:layout_constraintEnd_toEndOf="@+id/container" />
 </android.support.constraint.ConstraintLayout>

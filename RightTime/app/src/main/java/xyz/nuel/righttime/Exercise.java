@@ -9,20 +9,21 @@ public class Exercise implements Serializable {
     private String reps;
     private String sets;
     private String description;
-    private String notes;
+    private int points;
+    //private String notes;
 
     public Exercise() {
     }
 
 
 
-    public Exercise(String description, String duration, String name, String notes, String reps, String sets) {
+    public Exercise(String description, String duration, String name, int points, String reps, String sets) {
         this.name = name;
         this.duration = duration;
         this.reps = reps;
         this.sets = sets;
         this.description = description;
-        this.notes = notes;
+        this.points = points;
 
     }
 
@@ -67,12 +68,12 @@ public class Exercise implements Serializable {
         return description;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setPoints(int points) {
+        this.points = points;
     }
 
-    public String getNotes() {
+    public int getPoints() {
 
-        return notes;
+        return points;
     }
 }

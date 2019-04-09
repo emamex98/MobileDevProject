@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,11 +18,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentInteractionListener {
 
     private Exercise ejercicio;
     private TextView nombre, set, rep, tiempo;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +66,21 @@ public class ExerciseActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         Fragment ef = manager.findFragmentByTag("ExerciseFragment");
         if(ef != null){
-            NotesFragment nf = NotesFragment.newInstance(ejercicio.getNotes());
+            NotesFragment nf = NotesFragment.newInstance(Integer.parseInt(ejercicio.getDuration()));
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.remove(ef);
             transaction.add(R.id.container, nf, "NotesFragment");
             transaction.commit();
         }
 
+    }
+
+    @Override
+    public void fragmentCallback(boolean done) {
+        if(done){
+            //aqui se le agregan puntos al usuario
+            Toast.makeText(this, "se acaba", Toast.LENGTH_SHORT).show();
+            //usuario.escribirenBase(ejercicio.getPoints())
+        }
     }
 }
