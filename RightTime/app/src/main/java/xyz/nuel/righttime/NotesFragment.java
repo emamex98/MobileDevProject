@@ -47,7 +47,7 @@ public class NotesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-           timeR = getArguments().getInt(NOTE_PARAM);
+            timeR = getArguments().getInt(NOTE_PARAM);
         }
     }
 
@@ -146,7 +146,7 @@ public class NotesFragment extends Fragment {
         int seconds = (int) (mTimeLeftInMillies/1000)% 60;
 
         String timeLeftFormat = String.format(Locale.getDefault()
-        , "%02d:%02d", minutes, seconds);
+                , "%02d:%02d", minutes, seconds);
 
         textTimer.setText(timeLeftFormat);
     }

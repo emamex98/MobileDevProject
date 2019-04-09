@@ -2,12 +2,19 @@ package xyz.nuel.righttime;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.AuthResult;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,29 +24,47 @@ import java.util.Properties;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private DBHelper db;
+    private FirebaseAuth firebaseAuth;
+
     private TextView name, email, passcode;
+    private Button btSU;
+
     private Properties savedAccount;
     private static final String SAVED_ACCOUNT = "savedAccount.xml";
+    private Intent intentHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        db = new DBHelper(this);
-
         name = findViewById(R.id.tfName);
         email = findViewById(R.id.tfEmailNew);
         passcode = findViewById(R.id.tfPasscodeNew);
+        btSU = findViewById(R.id.btSU);
+
+        intentHome = new Intent(this, HomeActivity.class);
 
     }
 
     public void createAccount(View v){
-        db.addUser(name.getText().toString(), email.getText().toString(), Integer.parseInt(passcode.getText().toString()));
-        setSavedAccount();
-        Intent intentHome = new Intent(this, HomeActivity.class);
-        startActivity(intentHome);
+        firebaseAuth = firebaseAuth.getInstance();
+        firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), passcode.getText().toString()).addOnCompleteListener(
+                new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            setSavedAccount();
+                            startActivity(intentHome);
+                            finish();
+                        }
+                        else{
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getApplicationContext(), error + "", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
     }
 
     private void setSavedAccount(){
@@ -50,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         String yes = "1";
 
         savedAccount.put("remember", yes);
-        savedAccount.put("name", db.getName(email.getText().toString()));
+        savedAccount.put("name", name.getText().toString());
         savedAccount.put("email", email.getText().toString());
         savedAccount.put("passcode", passcode.getText().toString());
         wrFile();

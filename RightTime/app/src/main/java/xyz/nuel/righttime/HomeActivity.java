@@ -19,11 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Properties;
@@ -38,6 +42,8 @@ public class HomeActivity extends AppCompatActivity implements
     private ListView listRoutine;
     private ArrayAdapter<String> adapter;
     private DBHelper db;
+
+    private View currentSelectedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +63,23 @@ public class HomeActivity extends AppCompatActivity implements
 
         listRoutine = findViewById(R.id.listRoutines);
 
-        // data source
         String[] data = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
 
+        listRoutine.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listRoutine.setItemChecked(3, true);
+        Log.wtf("DATE", listRoutine.getCheckedItemPosition() + "");
+
         listRoutine.setAdapter(adapter);
         listRoutine.setOnItemClickListener(this);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("u");
+        String formattedDate = df.format(c);
+        int weekday = Integer.parseInt(formattedDate);
+
+
+        Log.wtf("DATE","Current time => " + formattedDate);
 
     }
 
