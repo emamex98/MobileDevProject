@@ -1,5 +1,6 @@
 package xyz.nuel.righttime;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -57,7 +58,7 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
         nombre.setText(ejercicio.getName());
         set.setText(ejercicio.getSets());
         rep.setText(ejercicio.getReps());
-        tiempo.setText(ejercicio.getDuration());
+        tiempo.setText(ejercicio.getDuration() + " min.");
 
         ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription());
         FragmentManager manager = getSupportFragmentManager();
@@ -111,7 +112,13 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
 
                 }
             });
+
             Toast.makeText(this, "You've earned " + ejercicio.getPoints() + " points!", Toast.LENGTH_SHORT).show();
+
+            Intent retIntent = new Intent();
+            setResult(RESULT_OK, retIntent);
+            finish();
+
         }
     }
 

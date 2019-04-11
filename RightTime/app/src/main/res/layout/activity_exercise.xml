@@ -11,41 +11,80 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
         android:text="Nombre"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/duration"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="1dp"
         android:text="Duracion"
-        app:layout_constraintEnd_toEndOf="@+id/sets"
-        app:layout_constraintStart_toEndOf="@+id/sets"
+        app:layout_constraintStart_toEndOf="@+id/duration2"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/duration2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginLeft="26dp"
+        android:text="Duration:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <TextView
         android:id="@+id/sets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginTop="4dp"
         android:text="Sets"
-        app:layout_constraintBottom_toTopOf="@+id/repetitions"
-        app:layout_constraintStart_toStartOf="@+id/repetitions" />
+        app:layout_constraintStart_toEndOf="@+id/sets2"
+        app:layout_constraintTop_toBottomOf="@+id/duration" />
+
+    <TextView
+        android:id="@+id/sets2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="7dp"
+        android:text="Sets:"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/duration2" />
 
     <TextView
         android:id="@+id/repetitions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
         android:text="Repeticiones"
+        app:layout_constraintStart_toEndOf="@+id/repetitions2"
+        app:layout_constraintTop_toBottomOf="@+id/sets" />
+
+    <TextView
+        android:id="@+id/repetitions2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginLeft="26dp"
+        android:text="Reps:"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
+        app:layout_constraintTop_toBottomOf="@+id/sets2" />
 
     <RelativeLayout
         android:id="@+id/container"
@@ -68,23 +107,38 @@
         android:id="@+id/desButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginLeft="46dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginLeft="54dp"
+        android:layout_marginTop="44dp"
         android:onClick="loadDescription"
         android:text="Description"
-        app:layout_constraintStart_toStartOf="@+id/container"
-        app:layout_constraintTop_toBottomOf="@+id/repetitions" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repetitions2" />
 
     <Button
         android:id="@+id/timerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="67dp"
-        android:layout_marginRight="67dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginStart="81dp"
+        android:layout_marginLeft="81dp"
+        android:layout_marginTop="156dp"
         android:onClick="loadNotes"
         android:text="Timer"
-        app:layout_constraintBottom_toTopOf="@+id/container"
-        app:layout_constraintEnd_toEndOf="@+id/container" />
+        app:layout_constraintStart_toEndOf="@+id/desButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="395dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desButton" />
 </android.support.constraint.ConstraintLayout>

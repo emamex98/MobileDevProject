@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 public class RoutineDetailActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -27,6 +29,8 @@ public class RoutineDetailActivity extends AppCompatActivity implements AdapterV
     private Exercise exercise;
     private ListView listRoutineDet;
     private ExerciseAdapter adapter;
+
+    private int lastPosition;
 
 
     @Override
@@ -65,9 +69,23 @@ public class RoutineDetailActivity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Exercise ejercicio = exercises.get(position);
+        lastPosition = position;
+        Exercise ejercicio = exercises.get(lastPosition);
         Intent intent = new Intent(this, ExerciseActivity.class);
         intent.putExtra("ejercicio", ejercicio);
-        startActivity(intent);
+        //startActivity(intent);
+
+        startActivityForResult(intent, 1);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            adapter.addNCI(lastPosition);
+            listRoutineDet.setAdapter(adapter);
+        }
+    }
+
+
+
 }

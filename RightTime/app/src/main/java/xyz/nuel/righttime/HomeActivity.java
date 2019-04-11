@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements
                 txtScore.setText("Score: " + score);
                 long level = Math.round(Math.floor(Integer.parseInt(score)/10));
                 txtLevel.setText("Level: " + level);
-                pg.setProgress(((int)level * 10)%100);
+                pg.setProgress(((int)level * 10)%101);
             }
 
             @Override

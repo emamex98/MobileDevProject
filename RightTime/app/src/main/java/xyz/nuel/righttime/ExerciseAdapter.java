@@ -1,6 +1,7 @@
 package xyz.nuel.righttime;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,9 +15,12 @@ class ExerciseAdapter extends BaseAdapter {
     private ArrayList<Exercise> exercises;
     private Activity activity;
 
+    private ArrayList<Integer> nonClickable;
+
     public ExerciseAdapter(ArrayList<Exercise> source, Activity activity){
         this.exercises = source;
         this.activity = activity;
+        this.nonClickable = new ArrayList<Integer>();
     }
 
     @Override
@@ -54,5 +58,18 @@ class ExerciseAdapter extends BaseAdapter {
         reps.setText(exercise.getReps());
 
         return convertView;
+    }
+
+    public void addNCI(int index){
+        nonClickable.add(index);
+    }
+
+
+    @Override
+    public boolean isEnabled(int position) {
+        if(nonClickable.contains(position)){
+            return false;
+        }
+        return true;
     }
 }
