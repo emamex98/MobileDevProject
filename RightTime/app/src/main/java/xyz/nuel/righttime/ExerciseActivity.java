@@ -28,7 +28,8 @@ import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
-public class ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentInteractionListener {
+public class
+ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentInteractionListener {
 
     private Exercise ejercicio;
     private TextView nombre, set, rep, tiempo;

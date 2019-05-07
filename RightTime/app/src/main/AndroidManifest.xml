@@ -3,6 +3,7 @@
     package="xyz.nuel.righttime">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>﻿
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,7 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".LoginActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ExerciseActivity" />
+        <receiver android:name=".NotReceiver" />
     </application>
 
 </manifest>
