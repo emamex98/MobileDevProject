@@ -86,8 +86,6 @@ public class HomeActivity extends AppCompatActivity implements
 
         listRoutine.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listRoutine.setItemChecked(3, true);
-        Log.wtf("DATE", listRoutine.getCheckedItemPosition() + "");
-
         listRoutine.setAdapter(adapter);
         listRoutine.setOnItemClickListener(this);
 
@@ -135,9 +133,6 @@ public class HomeActivity extends AppCompatActivity implements
                 sun.setVisibility(View.VISIBLE);
                 break;
         }
-
-
-        Log.wtf("DATE","Current time => " + formattedDate);
 
     }
 
@@ -198,12 +193,11 @@ public class HomeActivity extends AppCompatActivity implements
         if(file.delete())
         {
             Toast.makeText(this,"Logged out successfully.", Toast.LENGTH_SHORT).show();
-            Intent intentHome = new Intent(this, MainActivity.class);
-            startActivity(intentHome);
+            finish();
         }
         else
         {
-            Toast.makeText(this,"Error logging out..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Error logging out.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -211,7 +205,6 @@ public class HomeActivity extends AppCompatActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intentito = new Intent(this, RoutineDetailActivity.class);
         startActivity(intentito);
-        //Toast.makeText(this, "position: " + position + " id: " + id, Toast.LENGTH_SHORT).show();
     }
 
     // Codigo se repite
@@ -232,8 +225,6 @@ public class HomeActivity extends AppCompatActivity implements
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            //Toast.makeText(this, savedAccount.get("remember") + "", Toast.LENGTH_SHORT).show();
 
             String result = savedAccount.get("remember") + "";
             return Integer.parseInt(result);

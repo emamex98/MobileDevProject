@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
 
-    private TextView email, passcode;
+    private TextView email, passcode, forgotPass;
     private Properties savedAccount;
     private static final String SAVED_ACCOUNT = "savedAccount.xml";
 
@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.tfEmailExisting);
         passcode = findViewById(R.id.tfPasscodeExisting);
+        forgotPass = findViewById(R.id.recoverPass);
 
         intentHome = new Intent(this, HomeActivity.class);
     }
@@ -69,9 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
-
-        //String currentUID = firebaseAuth.getCurrentUser().getUid();
-        //Log.wtf("UID", currentUID);
     }
 
     private void setSavedAccount(){
@@ -84,19 +82,25 @@ public class LoginActivity extends AppCompatActivity {
         mReference = mDatabase.getReference("userdata/" + currentUID + "/name");
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String yes = "1";
-                currentName = dataSnapshot.getValue().toString();
+                if (dataSnapshot != null) {
+                    String yes = "1";
 
-                savedAccount.put("remember", yes);
-                savedAccount.put("name", currentName);
-                savedAccount.put("email", email.getText().toString());
-                savedAccount.put("passcode", passcode.getText().toString());
-                savedAccount.put("uid", currentUID);
-                wrFile();
+                    currentName = dataSnapshot.getValue().toString();
 
-                startActivity(intentHome);
+                    savedAccount.put("remember", yes);
+                    savedAccount.put("name", currentName);
+                    savedAccount.put("email", email.getText().toString());
+                    savedAccount.put("passcode", passcode.getText().toString());
+                    savedAccount.put("uid", currentUID);
+                    wrFile();
+
+                    startActivity(intentHome);
+
+                } else {
+                    Toast.makeText(LoginActivity.this,"Error logging in.", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -120,5 +124,10 @@ public class LoginActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onClickReset(View v) {
+            Intent intentito = new Intent(this, ForgotPassword.class);
+            startActivity(intentito);
     }
 }

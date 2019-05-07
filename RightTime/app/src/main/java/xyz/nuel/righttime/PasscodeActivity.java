@@ -27,7 +27,6 @@ public class PasscodeActivity extends AppCompatActivity {
 
         passcode = findViewById(R.id.txtPasscodeB);
 
-        //Toast.makeText(this, getSavedPasscode() + "", Toast.LENGTH_SHORT).show();
     }
 
     public void logInWithPasscode(View v){
@@ -57,13 +56,26 @@ public class PasscodeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //Toast.makeText(this, savedAccount.get("remember") + "", Toast.LENGTH_SHORT).show();
-
             String result = savedAccount.get("passcode") + "";
             return Integer.parseInt(result);
 
         }
 
         return -1;
+    }
+
+    public void onClickReset(View v){
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+
+        if(file.delete())
+        {
+            Toast.makeText(this,"Logged out successfully.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else
+        {
+            Toast.makeText(this,"Error logging out.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

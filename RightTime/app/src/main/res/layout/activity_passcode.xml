@@ -55,4 +55,18 @@
         android:inputType="numberPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <TextView
+        android:id="@+id/logOutPass"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:onClick="onClickReset"
+        android:text="Log Out"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btSIB" />
 </android.support.constraint.ConstraintLayout>

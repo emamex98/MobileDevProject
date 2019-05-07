@@ -56,4 +56,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tfPasscodeExisting" />
 
+    <TextView
+        android:id="@+id/recoverPass"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="146dp"
+        android:layout_marginLeft="146dp"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:onClick="onClickReset"
+        android:text="Forgot Password?"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btSI" />
+
 </android.support.constraint.ConstraintLayout>
