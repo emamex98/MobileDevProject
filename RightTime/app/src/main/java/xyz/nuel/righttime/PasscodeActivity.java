@@ -3,6 +3,7 @@ package xyz.nuel.righttime;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,4 +79,14 @@ public class PasscodeActivity extends AppCompatActivity {
             Toast.makeText(this,"Error logging out.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /*
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100) {
+            if(resultCode == RESULT_CANCELED){
+                finish();
+            }
+        }
+    }
+    */
 }

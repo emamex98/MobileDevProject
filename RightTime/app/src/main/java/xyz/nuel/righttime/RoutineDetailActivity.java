@@ -73,8 +73,6 @@ public class RoutineDetailActivity extends AppCompatActivity implements AdapterV
         Exercise ejercicio = exercises.get(lastPosition);
         Intent intent = new Intent(this, ExerciseActivity.class);
         intent.putExtra("ejercicio", ejercicio);
-        //startActivity(intent);
-
         startActivityForResult(intent, 1);
     }
 

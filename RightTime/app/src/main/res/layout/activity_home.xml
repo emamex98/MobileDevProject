@@ -102,6 +102,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:progress="0"
+        android:clickable="true"
+        android:onClick="launchStats"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 

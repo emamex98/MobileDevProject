@@ -49,10 +49,15 @@ public class HomeActivity extends AppCompatActivity implements
     private ProgressBar pg;
     private ArrayAdapter<String> adapter;
 
+    private int lastScore, progress;
+    private String minutes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        lastScore = 0;
 
         greeting = findViewById(R.id.txtWelcome);
         greeting.setText("Welcome, " + getSavedName() + "!");
@@ -68,6 +73,20 @@ public class HomeActivity extends AppCompatActivity implements
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String score = dataSnapshot.getValue().toString();
                 txtScore.setText("Score: " + score);
+
+                mDatabase = FirebaseDatabase.getInstance();
+                mReference = mDatabase.getReference("userdata/" + getSavedUID() + "/time");
+
+                String min = getSavedMinutes();
+                //mReference.setValue("It worked!");
+                mReference.setValue("" + min);
+
+                if(lastScore !=0){
+                    progress = Integer.parseInt(score) - lastScore;
+                } else {
+                    lastScore = Integer.parseInt(score);
+                }
+
                 long level = Math.round(Math.floor(Integer.parseInt(score)/10));
                 txtLevel.setText("Level: " + level);
                 pg.setProgress(((int)level * 10)%101);
@@ -186,19 +205,48 @@ public class HomeActivity extends AppCompatActivity implements
         return null;
     }
 
+    private String getSavedMinutes(){
+
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+
+        if(file.exists()) {
+            try {
+                FileInputStream fis = openFileInput(SAVED_ACCOUNT);
+                savedAccount.loadFromXML(fis);
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (InvalidPropertiesFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return savedAccount.get("minutes") + "";
+        }
+
+        return null;
+    }
+
     public void logOut(View v){
+
         savedAccount = new Properties();
         File file = new File(getFilesDir(), SAVED_ACCOUNT);
 
         if(file.delete())
         {
             Toast.makeText(this,"Logged out successfully.", Toast.LENGTH_SHORT).show();
-            finish();
+            //setResult(RESULT_CANCELED);
+            //finish();
         }
         else
         {
             Toast.makeText(this,"Error logging out.", Toast.LENGTH_SHORT).show();
         }
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -263,5 +311,11 @@ public class HomeActivity extends AppCompatActivity implements
     public void changeLoginB(){
         Intent intentitoB = new Intent(this, PasscodeActivity.class);
         startActivity(intentitoB);
+    }
+
+    public void launchStats(View v){
+        Intent intent = new Intent(this, StatsActivity.class);
+        intent.putExtra("progress", String.valueOf(progress));
+        startActivity(intent);
     }
 }

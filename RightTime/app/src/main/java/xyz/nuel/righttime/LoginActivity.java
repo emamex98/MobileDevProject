@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String SAVED_ACCOUNT = "savedAccount.xml";
 
     private Intent intentHome;
-    private String currentUID, currentName;
+    private String currentUID, currentName, currentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +94,10 @@ public class LoginActivity extends AppCompatActivity {
                     savedAccount.put("email", email.getText().toString());
                     savedAccount.put("passcode", passcode.getText().toString());
                     savedAccount.put("uid", currentUID);
+                    //savedAccount.put("minutes", "0");
                     wrFile();
 
-                    startActivity(intentHome);
+                    //startActivity(intentHome);
 
                 } else {
                     Toast.makeText(LoginActivity.this,"Error logging in.", Toast.LENGTH_LONG).show();
@@ -108,6 +109,33 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        mReference = mDatabase.getReference("userdata/" + currentUID + "/time");
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+                    currentTime = dataSnapshot.getValue().toString();
+                    savedAccount.put("minutes", currentTime + "");
+                    wrFile();
+
+                    startActivity(intentHome);
+
+                } else {
+                    Toast.makeText(LoginActivity.this,"Error loading time.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
 
         Toast.makeText(this, "ACCOUNT SAVED", Toast.LENGTH_SHORT).show();
 

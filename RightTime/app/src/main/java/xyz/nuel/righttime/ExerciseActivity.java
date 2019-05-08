@@ -1,6 +1,7 @@
 package xyz.nuel.righttime;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +25,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
@@ -99,10 +104,9 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
 
             mDatabase = FirebaseDatabase.getInstance();
             mReference = mDatabase.getReference("userdata/" + getSavedUID() + "/score");
-
             mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
                     currentScore = Integer.parseInt(dataSnapshot.getValue().toString());
                     mReference.setValue(currentScore + ejercicio.getPoints());
                 }
@@ -112,6 +116,8 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
 
                 }
             });
+
+            addMinutes(Integer.parseInt(ejercicio.getDuration()));
 
             Toast.makeText(this, "You've earned " + ejercicio.getPoints() + " points!", Toast.LENGTH_SHORT).show();
 
@@ -145,5 +151,44 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
         }
 
         return null;
+    }
+
+    private void addMinutes(int duration){
+
+        savedAccount = new Properties();
+        File file = new File(getFilesDir(), SAVED_ACCOUNT);
+        int minutes = 0;
+
+
+
+        if(file.exists()) {
+            try {
+                FileInputStream fis = openFileInput(SAVED_ACCOUNT);
+                savedAccount.loadFromXML(fis);
+                minutes = Integer.parseInt(savedAccount.get("minutes").toString());
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (InvalidPropertiesFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        savedAccount.put("minutes", (minutes + duration) + "");
+        wrFile();
+    }
+
+    private void wrFile(){
+        try {
+            FileOutputStream fos = openFileOutput(SAVED_ACCOUNT, Context.MODE_PRIVATE);
+            savedAccount.storeToXML(fos, null);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
