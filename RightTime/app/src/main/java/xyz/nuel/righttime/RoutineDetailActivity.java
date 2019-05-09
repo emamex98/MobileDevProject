@@ -1,7 +1,14 @@
 package xyz.nuel.righttime;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Console;
 import java.util.ArrayList;
-
+import java.util.Random;
+@TargetApi(16)
 public class RoutineDetailActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private FirebaseDatabase mDatabase;
@@ -29,6 +38,8 @@ public class RoutineDetailActivity extends AppCompatActivity implements AdapterV
     private Exercise exercise;
     private ListView listRoutineDet;
     private ExerciseAdapter adapter;
+    private Button not;
+    private NotHelper notHelper;
 
     private int lastPosition;
 
@@ -44,6 +55,19 @@ public class RoutineDetailActivity extends AppCompatActivity implements AdapterV
         exercises = new ArrayList<>();
         adapter = new ExerciseAdapter(exercises, this);
         listRoutineDet = findViewById(R.id.listRoutineDet);
+
+        notHelper = new NotHelper(this);
+        not = findViewById(R.id.notification);
+        //not.setVisibility(View.INVISIBLE);
+
+        not.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Notification.Builder builder = notHelper.getRightNotification("RightTime","Time to do exercise");
+                notHelper.getManager().notify(new Random().nextInt(), builder.build());
+            }
+        });
+
 
         exercise = new Exercise();
 
@@ -83,7 +107,6 @@ public class RoutineDetailActivity extends AppCompatActivity implements AdapterV
             listRoutineDet.setAdapter(adapter);
         }
     }
-
 
 
 }

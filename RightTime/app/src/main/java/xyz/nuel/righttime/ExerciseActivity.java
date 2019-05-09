@@ -33,7 +33,8 @@ import java.util.Date;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
-public class ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentInteractionListener {
+public class
+ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentInteractionListener {
 
     private Exercise ejercicio;
     private TextView nombre, set, rep, tiempo;
@@ -65,7 +66,7 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
         rep.setText(ejercicio.getReps());
         tiempo.setText(ejercicio.getDuration() + " min.");
 
-        ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription());
+        ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription(), ejercicio.getName());
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.container, ef, "ExerciseFragment");
@@ -77,7 +78,7 @@ public class ExerciseActivity extends AppCompatActivity implements NotesFragment
         FragmentManager manager = getSupportFragmentManager();
         Fragment nf = manager.findFragmentByTag("NotesFragment");
         if(nf != null){
-            ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription());
+            ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription(), ejercicio.getName());
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.remove(nf);
             transaction.add(R.id.container, ef, "ExerciseFragment");
