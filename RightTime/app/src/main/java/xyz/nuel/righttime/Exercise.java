@@ -13,6 +13,7 @@ public class Exercise implements Serializable {
     //private String notes;
 
     public Exercise() {
+
     }
 
 

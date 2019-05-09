@@ -61,7 +61,7 @@ ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentIn
         rep.setText(ejercicio.getReps());
         tiempo.setText(ejercicio.getDuration() + " min.");
 
-        ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription());
+        ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription(), ejercicio.getName());
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.container, ef, "ExerciseFragment");
@@ -73,7 +73,7 @@ ExerciseActivity extends AppCompatActivity implements NotesFragment.OnFragmentIn
         FragmentManager manager = getSupportFragmentManager();
         Fragment nf = manager.findFragmentByTag("NotesFragment");
         if(nf != null){
-            ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription());
+            ExerciseFragment ef = ExerciseFragment.newInstance(ejercicio.getDescription(), ejercicio.getName());
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.remove(nf);
             transaction.add(R.id.container, ef, "ExerciseFragment");

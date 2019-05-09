@@ -142,9 +142,9 @@ public class HomeActivity extends AppCompatActivity implements
         Log.wtf("DATE","Current time => " + formattedDate);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,0);
-        calendar.set(Calendar.MINUTE, 8);
-        calendar.set(Calendar.SECOND,10);
+        calendar.set(Calendar.HOUR_OF_DAY,18);
+        calendar.set(Calendar.MINUTE, 44);
+        calendar.set(Calendar.SECOND,59);
         Intent inNot = new Intent(getApplicationContext(), NotReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100, inNot, PendingIntent.FLAG_UPDATE_CURRENT);
 
