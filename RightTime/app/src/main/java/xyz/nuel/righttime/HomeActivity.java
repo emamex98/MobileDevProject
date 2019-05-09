@@ -1,16 +1,24 @@
 package xyz.nuel.righttime;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     private int lastScore, progress;
     private String minutes;
+    private long level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,7 @@ public class HomeActivity extends AppCompatActivity implements
         pg = findViewById(R.id.progressBar);
 
         mDatabase = FirebaseDatabase.getInstance();
+
         mReference = mDatabase.getReference("userdata/" + getSavedUID() + "/score");
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -78,7 +88,6 @@ public class HomeActivity extends AppCompatActivity implements
                 mReference = mDatabase.getReference("userdata/" + getSavedUID() + "/time");
 
                 String min = getSavedMinutes();
-                //mReference.setValue("It worked!");
                 mReference.setValue("" + min);
 
                 if(lastScore !=0){
@@ -87,9 +96,12 @@ public class HomeActivity extends AppCompatActivity implements
                     lastScore = Integer.parseInt(score);
                 }
 
-                long level = Math.round(Math.floor(Integer.parseInt(score)/10));
+                level = Math.round(Math.floor(Integer.parseInt(score)/10));
                 txtLevel.setText("Level: " + level);
                 pg.setProgress(((int)level * 10)%101);
+
+                getPaidStatus(getSavedUID());
+
             }
 
             @Override
@@ -237,8 +249,6 @@ public class HomeActivity extends AppCompatActivity implements
         if(file.delete())
         {
             Toast.makeText(this,"Logged out successfully.", Toast.LENGTH_SHORT).show();
-            //setResult(RESULT_CANCELED);
-            //finish();
         }
         else
         {
@@ -317,5 +327,28 @@ public class HomeActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, StatsActivity.class);
         intent.putExtra("progress", String.valueOf(progress));
         startActivity(intent);
+    }
+
+    private void getPaidStatus(String uid){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("userdata/" + uid + "/paid");
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.wtf("DEBUG",  "level = " + level);
+                Log.wtf("DEBUG", "paid = " + dataSnapshot.getValue().toString());
+                if(level > 0){
+                    if(Boolean.parseBoolean(dataSnapshot.getValue().toString()) == false){
+                        Intent intentPay = new Intent(HomeActivity.this, SuscriptionActivity.class);
+                        startActivity(intentPay);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

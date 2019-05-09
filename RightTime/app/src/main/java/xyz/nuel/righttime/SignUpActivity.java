@@ -63,6 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             currentUID = firebaseAuth.getCurrentUser().getUid();
                             setSavedAccount();
+                            intentHome.putExtra("scr", "signup");
                             startActivity(intentHome);
                             finish();
                         }
@@ -93,12 +94,15 @@ public class SignUpActivity extends AppCompatActivity {
         mReference = mDatabase.getReference("userdata/" + currentUID + "/time");
         mReference.setValue("0");
 
+        mReference = mDatabase.getReference("userdata/" + currentUID + "/paid");
+        mReference.setValue("false");
+
         savedAccount.put("remember", yes);
         savedAccount.put("name", name.getText().toString());
         savedAccount.put("email", email.getText().toString());
         savedAccount.put("passcode", passcode.getText().toString());
         savedAccount.put("uid", currentUID);
-        savedAccount.put("minutes", 0);
+        savedAccount.put("minutes", "0");
         wrFile();
 
         Toast.makeText(this, "ACCOUNT SAVED: " + savedAccount.getProperty("email"), Toast.LENGTH_SHORT).show();

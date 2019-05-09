@@ -33,6 +33,7 @@ public class PasscodeActivity extends AppCompatActivity {
     public void logInWithPasscode(View v){
         if(Integer.parseInt(passcode.getText().toString()) == getSavedPasscode()){
             Intent intentHome = new Intent(this, HomeActivity.class);
+            intentHome.putExtra("scr", "passcode");
             startActivity(intentHome);
         } else {
             Toast.makeText(this,"Incorrect passcode.", Toast.LENGTH_SHORT).show();

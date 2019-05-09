@@ -6,7 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.wtf("DEBUG", "aqui ");
                         if (task.isSuccessful()) {
                             currentUID = firebaseAuth.getCurrentUser().getUid();
                             setSavedAccount();
@@ -94,10 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                     savedAccount.put("email", email.getText().toString());
                     savedAccount.put("passcode", passcode.getText().toString());
                     savedAccount.put("uid", currentUID);
-                    //savedAccount.put("minutes", "0");
                     wrFile();
-
-                    //startActivity(intentHome);
 
                 } else {
                     Toast.makeText(LoginActivity.this,"Error logging in.", Toast.LENGTH_LONG).show();
@@ -121,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                     savedAccount.put("minutes", currentTime + "");
                     wrFile();
 
+                    intentHome.putExtra("scr", "login");
                     startActivity(intentHome);
 
                 } else {
