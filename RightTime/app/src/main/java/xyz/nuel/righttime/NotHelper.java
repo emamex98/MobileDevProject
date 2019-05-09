@@ -22,7 +22,7 @@ public class NotHelper extends ContextWrapper {
 
 
     private void createChannels(){
-        NotificationChannel rightChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel rightChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             rightChannel.enableLights(true);
             rightChannel.enableVibration(true);
             rightChannel.setLightColor(Color.GREEN);
